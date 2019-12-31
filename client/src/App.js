@@ -7,7 +7,8 @@ class App extends Component {
   state = {
     post: "",
     responseToPost: "",
-    serverResponse: ""
+    serverResponse: "",
+    dbResponse: ""
   };
 
   handleSubmit = event => {
@@ -32,6 +33,17 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  queryDb = async () => {
+    const response = await fetch("/api/test", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const body = await response.text();
+    this.setState({ dbResponse: body });
+  };
+
   render() {
     return (
       <div className="App">
@@ -50,6 +62,9 @@ class App extends Component {
           <div>
             <p>Response from Server: {this.state.responseToPost}</p>
           </div>
+
+          <button onClick={this.queryDb}>query DB</button>
+          <p>Response from DB: {this.state.dbResponse}</p>
         </header>
       </div>
     );
