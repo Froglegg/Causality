@@ -2,9 +2,20 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 5000;
+const morgan = require("morgan"); // logs requests
+const helmet = require("helmet"); // creates headers that protect from attacks (security)
+const cors = require("cors"); // allows/disallows cross-site communication
+const corsOptions = require("./corsOptions");
+
 // Define middleware here
+require("dotenv").config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(helmet());
+app.use(cors(corsOptions));
+
+app.use(morgan("combined"));
+
 // API calls
 app.get("/api/hello", (req, res) => {
   res.send({ express: "Hello From Express" });
