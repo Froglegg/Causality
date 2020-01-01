@@ -16,10 +16,21 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(morgan("combined"));
 
-app.get("/api/test", async (req, res) => {
+// causality processing function... should this go here , in the controllers, in routes, client utils ?
+const utils = require("./utils/app");
+// const exampleJournal = require("./utils/exampleJournal");
+// let testResponse = utils.causality(exampleJournal);
+
+app.get("/api/testDb", async (req, res) => {
   const users = await db("users"); // making a query to get all users
   console.log(users[0].userName);
   res.send(users[0].userName);
+});
+
+app.post("/api/testFunction", async (req, res) => {
+  let response = utils.causality(req.body);
+
+  res.send(response);
 });
 
 // API calls

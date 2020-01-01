@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import handler from "./utils/utils";
-
+import journal from "./utils/exampleJournal";
+const exampleJournal = journal.journal;
 class App extends Component {
   state = {
     post: "",
     responseToPost: "",
     serverResponse: "",
-    dbResponse: ""
+    dbResponse: "",
+    functionResponse: ""
   };
 
   handleSubmit = event => {
@@ -31,10 +33,11 @@ class App extends Component {
       .callApi()
       .then(res => this.setState({ serverResponse: res.express }))
       .catch(err => console.log(err));
+    console.log(exampleJournal);
   }
 
   queryDb = async () => {
-    const response = await fetch("/api/test", {
+    const response = await fetch("/api/testDb", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -42,6 +45,19 @@ class App extends Component {
     });
     const body = await response.text();
     this.setState({ dbResponse: body });
+  };
+
+  queryFunction = async () => {
+    const response = await fetch("/api/testFunction", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(exampleJournal)
+    });
+    // await console.log(response);
+    const body = await response.text();
+    this.setState({ functionResponse: body });
   };
 
   render() {
@@ -65,6 +81,9 @@ class App extends Component {
 
           <button onClick={this.queryDb}>query DB</button>
           <p>Response from DB: {this.state.dbResponse}</p>
+
+          <button onClick={this.queryFunction}>test function</button>
+          <p>Response from server: {this.state.functionResponse}</p>
         </header>
       </div>
     );
