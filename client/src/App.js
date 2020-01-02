@@ -11,7 +11,7 @@ class App extends Component {
     journalsResponse: "",
     functionResponse: "",
     singleItemResponse: "",
-    id: "13"
+    id: "1"
   };
 
   // handleSubmit = event => {
