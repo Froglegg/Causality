@@ -6,20 +6,17 @@ import journal from "./utils/exampleJournal";
 const exampleJournal = journal.journal;
 class App extends Component {
   state = {
-    post: "",
-    responseToPost: "",
     serverResponse: "",
-    dbResponse: "",
+    usersResponse: "",
+    journalsResponse: "",
     functionResponse: "",
-    journalResponse: ""
+    singleItemResponse: "",
+    id: "13"
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    handler.handleSubmit(this);
-  };
-  // callApi = () => {
-  //   handler.callApi();
+  // handleSubmit = event => {
+  //   event.preventDefault();
+  //   handler.handleSubmit(this);
   // };
 
   handleInputChange = event => {
@@ -37,26 +34,38 @@ class App extends Component {
     console.log(exampleJournal);
   }
 
-  queryDb = async () => {
-    const response = await fetch("/api/testDb", {
+  queryUsers = async () => {
+    const response = await fetch("/api/users", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       }
     });
     const body = await response.text();
-    this.setState({ dbResponse: body });
+    this.setState({ usersResponse: body });
   };
 
-  queryDbJournals = async () => {
-    const response = await fetch("/api/testJournal", {
+  queryJournalItem = async id => {
+    id = this.state.id;
+    const response = await fetch(`/api/journals/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       }
     });
     const body = await response.text();
-    this.setState({ journalResponse: body });
+    this.setState({ singleItemResponse: body });
+  };
+
+  queryJournals = async () => {
+    const response = await fetch("/api/journals", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const body = await response.text();
+    this.setState({ journalsResponse: body });
   };
 
   queryFunction = async () => {
@@ -79,26 +88,17 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <p>{this.state.serverResponse}</p>
 
-          <form>
-            <input
-              name="post"
-              placeholder="Send something to server"
-              onChange={this.handleInputChange}
-            ></input>
-            <button onClick={this.handleSubmit}>Send it</button>
-          </form>
-          <div>
-            <p>Response from Server: {this.state.responseToPost}</p>
-          </div>
+          <button onClick={this.queryUsers}>query users</button>
+          <p>Response from DB: {this.state.usersResponse}</p>
 
-          <button onClick={this.queryDb}>query DB</button>
-          <p>Response from DB: {this.state.dbResponse}</p>
+          <button onClick={this.queryJournals}>query journals</button>
+          <p>Response from server: {this.state.journalsResponse}</p>
 
           <button onClick={this.queryFunction}>test function</button>
           <p>Response from server: {this.state.functionResponse}</p>
 
-          <button onClick={this.queryDbJournals}>test journal db</button>
-          <p>Response from server: {this.state.journalResponse}</p>
+          <button onClick={this.queryJournalItem}>get journal by ID</button>
+          <p>Response from server: {this.state.singleItemResponse}</p>
         </header>
       </div>
     );

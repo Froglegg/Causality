@@ -6,7 +6,7 @@ const helmet = require("helmet"); // creates headers that protect from attacks (
 const cors = require("cors"); // allows/disallows cross-site communication
 const corsOptions = require("./corsOptions");
 const morgan = require("morgan"); // logs requests, use "tiny" or "combined"
-const db = require("./db/config.js"); // importing the db config
+const routes = require("./routes"); // api routes
 
 // Define middleware here
 require("dotenv").config();
@@ -16,38 +16,13 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(morgan("combined"));
 
-// causality processing function... should this go here , in the controllers, in routes, client utils ?
-const utils = require("./utils/app");
-// const exampleJournal = require("./utils/exampleJournal");
-// let testResponse = utils.causality(exampleJournal);
-
-app.get("/api/testDb", async (req, res) => {
-  const users = await db("users"); // making a query to get all users
-  console.log(users[0].userName);
-  res.send(users[0].userName);
-});
-
-app.get("/api/testJournal", async (req, res) => {
-  const journals = await db("journals"); // making a query to get all journal items
-  console.log(journals[0]);
-  res.send(journals[0]);
-});
-
-app.post("/api/testFunction", async (req, res) => {
-  let response = utils.causality(req.body);
-
-  res.send(response);
-});
-
 // API calls
 app.get("/api/hello", async (req, res) => {
   res.send({ express: "Hello From Express" });
 });
-app.post("/api/world", (req, res) => {
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`
-  );
-});
+
+// Define API routes here
+app.use(routes);
 
 // NODE_ENV is a heroku config
 if (process.env.NODE_ENV === "production") {
