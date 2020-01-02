@@ -10,7 +10,8 @@ class App extends Component {
     responseToPost: "",
     serverResponse: "",
     dbResponse: "",
-    functionResponse: ""
+    functionResponse: "",
+    journalResponse: ""
   };
 
   handleSubmit = event => {
@@ -45,6 +46,17 @@ class App extends Component {
     });
     const body = await response.text();
     this.setState({ dbResponse: body });
+  };
+
+  queryDbJournals = async () => {
+    const response = await fetch("/api/testJournal", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    const body = await response.text();
+    this.setState({ journalResponse: body });
   };
 
   queryFunction = async () => {
@@ -84,6 +96,9 @@ class App extends Component {
 
           <button onClick={this.queryFunction}>test function</button>
           <p>Response from server: {this.state.functionResponse}</p>
+
+          <button onClick={this.queryDbJournals}>test journal db</button>
+          <p>Response from server: {this.state.journalResponse}</p>
         </header>
       </div>
     );

@@ -27,6 +27,12 @@ app.get("/api/testDb", async (req, res) => {
   res.send(users[0].userName);
 });
 
+app.get("/api/testJournal", async (req, res) => {
+  const journals = await db("journals"); // making a query to get all journal items
+  console.log(journals[0]);
+  res.send(journals[0]);
+});
+
 app.post("/api/testFunction", async (req, res) => {
   let response = utils.causality(req.body);
 
