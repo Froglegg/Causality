@@ -40,9 +40,11 @@ module.exports = {
       }
     }
 
-    let culpritStat = methods.phi(
-      methods.tableFor(`${mostLikely.event} ${leastLikely.event}`, journal)
-    );
+    let culpritStat = methods
+      .phi(
+        methods.tableFor(`${mostLikely.event} ${leastLikely.event}`, journal)
+      )
+      .toFixed(2);
 
     let data = `This issue occurs most often when this happens: ${mostLikely.event} and when this doesn't happen: ${leastLikely.event}. The correlation between the two events is ${culpritStat}`;
 

@@ -1,7 +1,7 @@
 // journal must follow this structure:
-// JOURNAL = [ {events: [], condition: boolean}, {}...]
+// journal = [ {events: [], condition: boolean}, {}...]
 
-var JOURNAL = [
+var journal = [
   { events: ["carrot", "exercise", "weekend"], condition: false },
   {
     events: ["bread", "pudding", "brushed teeth", "weekend", "touched tree"],
@@ -250,5 +250,5 @@ if (
   module.exports &&
   (typeof window == "undefined" || window.exports != exports)
 )
-  module.exports = JOURNAL;
-if (typeof global != "undefined" && !global.JOURNAL) global.JOURNAL = JOURNAL;
+  module.exports = journal;
+if (typeof global != "undefined" && !global.journal) global.journal = journal;
