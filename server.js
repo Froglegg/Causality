@@ -39,7 +39,7 @@ if (cluster.isMaster) {
 
   // API calls
   app.get("/api/hello", async (req, res) => {
-    res.send({ express: "Hello From Express" });
+    res.send({ express: `ProcessID:  ${process.pid}` });
   });
 
   // Define API routes here
