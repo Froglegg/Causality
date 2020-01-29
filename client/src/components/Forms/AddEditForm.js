@@ -3,10 +3,12 @@ import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
 class AddEditJournalForm extends React.Component {
   state = {
-    user: 0,
+    id: "",
+    user: "",
     journalName: "",
     condition: "",
-    data: ""
+    data: "",
+    causality: ""
   };
 
   onChange = e => {
@@ -21,11 +23,11 @@ class AddEditJournalForm extends React.Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        userName: this.state.userName,
-        email: this.state.email,
-        password: this.state.password,
-        location: this.state.location,
-        hobby: this.state.hobby
+        user: this.state.user,
+        journalName: this.state.journalName,
+        condition: this.state.condition,
+        data: this.state.data,
+        causality: this.state.causality
       })
     })
       .then(response => response.json())
@@ -49,17 +51,17 @@ class AddEditJournalForm extends React.Component {
       },
       body: JSON.stringify({
         id: this.state.id,
-        first: this.state.userName,
-        email: this.state.email,
-        password: this.state.password,
-        location: this.state.location,
-        hobby: this.state.hobby
+        user: this.state.user,
+        journalName: this.state.journalName,
+        condition: this.state.condition,
+        data: this.state.data,
+        causality: this.state.causality
       })
     })
       .then(response => response.json())
       .then(item => {
         if (Array.isArray(item)) {
-          // console.log(item[0])
+          // console.log(item[0]);
           this.props.updateState(item[0]);
           this.props.toggle();
         } else {
@@ -74,13 +76,13 @@ class AddEditJournalForm extends React.Component {
     if (this.props.item) {
       const {
         id,
-        userName,
-        email,
-        password,
-        location,
-        hobby
+        user,
+        journalName,
+        condition,
+        data,
+        causality
       } = this.props.item;
-      this.setState({ id, userName, email, password, location, hobby });
+      this.setState({ id, user, journalName, condition, data, causality });
     }
   }
 
@@ -90,55 +92,36 @@ class AddEditJournalForm extends React.Component {
         onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}
       >
         <FormGroup>
-          <Label for="">User Name</Label>
+          <Label for="journalName">Journal Name</Label>
           <Input
             type="text"
-            name="userName"
-            id="userName"
+            name="journalName"
+            id="journalName"
             onChange={this.onChange}
-            value={this.state.userName === null ? "" : this.state.userName}
+            value={
+              this.state.journalName === null ? "" : this.state.journalName
+            }
           />
         </FormGroup>
         <FormGroup>
-          <Label for="email">Email</Label>
+          <Label for="condition">Condition to test for</Label>
           <Input
-            type="email"
-            name="email"
-            id="email"
+            type="condition"
+            name="condition"
+            id="condition"
             onChange={this.onChange}
-            value={this.state.email === null ? "" : this.state.email}
+            value={this.state.condition === null ? "" : this.state.condition}
           />
         </FormGroup>
         <FormGroup>
-          <Label for="phone">Passwrod</Label>
+          <Label for="data">Data</Label>
           <Input
             type="text"
-            name="password"
-            id="password"
+            name="data"
+            id="data"
             onChange={this.onChange}
-            value={this.state.password === null ? "" : this.state.password}
-            placeholder="ex. 555-555-5555"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="location">Location</Label>
-          <Input
-            type="text"
-            name="location"
-            id="location"
-            onChange={this.onChange}
-            value={this.state.location === null ? "" : this.state.location}
-            placeholder="City, State"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="hobby">Hobby</Label>
-          <Input
-            type="text"
-            name="hobby"
-            id="hobby"
-            onChange={this.onChange}
-            value={this.state.hobby}
+            value={this.state.data === null ? "" : this.state.data}
+            placeholder="Enter journal data here. Will need to make an array of day objects, each with a boolean for the condition, and an array of events"
           />
         </FormGroup>
         <Button>Submit</Button>
